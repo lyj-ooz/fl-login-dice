@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:logindice/main.dart';
+import 'dart:math';
+import 'package:fluttertoast/fluttertoast.dart';
 
-class Dice extends StatelessWidget {
+class Dice extends StatefulWidget {
+  @override
+  State<Dice> createState() => _DiceState();
+}
+
+class _DiceState extends State<Dice> {
   // 페이지 이동, 스낵바 구현, textEditingController 사용법은 아주 중요!
+
+  int leftDice = 1;
+  int rightDice = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +35,13 @@ class Dice extends StatelessWidget {
                   //   width: 300.0,
                   // )
                   Expanded(
-                      child: Image.asset('image/dice1.png')
+                      child: Image.asset('image/dice$leftDice.png')
                   ),
                   SizedBox(
                     width: 20.0,
                   ),
                   Expanded(
-                      child: Image.asset('image/dice2.png')
+                      child: Image.asset('image/dice$rightDice.png')
                   )
                 ],
               ),
@@ -44,7 +53,14 @@ class Dice extends StatelessWidget {
               minWidth: 100.0,
               height: 60.0,
               child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      leftDice = Random().nextInt(6) + 1;
+                      rightDice = Random().nextInt(6) + 1;
+                    });
+                    
+                    showToast("left dice: {$leftDice} & right dice: {$rightDice}");
+                  },
                   child: Icon(Icons.play_arrow,
                     color: Colors.white,
                     size: 50.0,
@@ -56,4 +72,13 @@ class Dice extends StatelessWidget {
       ),
     );
   }
+}
+
+void showToast(String message) {
+  Fluttertoast.showToast(
+      msg: message,
+    backgroundColor: Colors.white,
+    toastLength: Toast.LENGTH_SHORT,
+    gravity: ToastGravity.BOTTOM
+  );
 }
